@@ -1,0 +1,16 @@
+JSON pattern-
+
+routes - Array of objects contains all the routes of the application.
+
+Fields of each routes object - 
+method - HTTP method of the route
+path - Path of the route
+returnFields - Array of objects contains all the fields of the response of the route.
+
+
+Fields of returnFields object -
+name - Name of the field
+returnType - Type of the field
+
+
+

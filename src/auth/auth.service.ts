@@ -21,7 +21,7 @@ import { refreshTokens, signIn, signTokens, signUp } from './interfaces';
 import {
   ACCESS_TOKEN_EXPIRE_TIME,
   REFRESH_TOKEN_EXPIRE_TIME,
-  REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS,
+  REFRESH_TOKEN_EXPIRE_TIME_IN_MILISECONDS,
 } from 'config';
 import { concatTokens, createTokenFingerprint } from './utils';
 import { CookieOptions, Response } from 'express';
@@ -33,16 +33,14 @@ export class AuthService {
     private jwt: JwtService,
     private readonly config: ConfigService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-  ) {
-    console.log(REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS);
-  }
+  ) {}
 
   cookieOptions: CookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    path: '/',
-    maxAge: REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS,
+    // httpOnly: true,
+    // secure: process.env.NODE_ENV === 'production',
+    // sameSite: 'none',
+    // path: '/',
+    maxAge: REFRESH_TOKEN_EXPIRE_TIME_IN_MILISECONDS,
   };
 
   async signUp(dto: SignUpDto, response: Response): Promise<signUp> {
@@ -74,7 +72,6 @@ export class AuthService {
         fingerprintHash,
       );
       await this.saveTokensOnCache(user.id, accessToken, refreshToken);
-      delete user.id;
       response.cookie('__Secure-Fgp', fingerprint, this.cookieOptions);
       return {
         ...user,
@@ -82,7 +79,6 @@ export class AuthService {
         refreshToken,
       };
     } catch (error) {
-      console.log(error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException(['email is already in use']);
@@ -125,7 +121,6 @@ export class AuthService {
         fingerprintHash,
       );
       await this.saveTokensOnCache(user.id, accessToken, refreshToken);
-      delete user.id;
       response.cookie('__Secure-Fgp', fingerprint, this.cookieOptions);
       return {
         ...user,
@@ -247,8 +242,10 @@ export class AuthService {
     refreshToken: string,
   ) {
     //refreshTokenLifetime should be same as the REFRESH_TOKEN_EXPIRE_TIME as that will be the ttl
-    const refreshTokenLifetime = REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS * 1000;
+    const refreshTokenLifetime = REFRESH_TOKEN_EXPIRE_TIME_IN_MILISECONDS;
     const tokensAndHash = concatTokens(accessToken, refreshToken);
-    await this.cacheManager.set(id, tokensAndHash, refreshTokenLifetime);
+    await this.cacheManager.set(id, tokensAndHash, {
+      ttl: refreshTokenLifetime,
+    });
   }
 }

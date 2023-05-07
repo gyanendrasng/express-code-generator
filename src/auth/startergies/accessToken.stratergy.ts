@@ -1,5 +1,6 @@
-import { Injectable, CACHE_MANAGER, Inject } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
@@ -36,9 +37,11 @@ export class AccessTokenStratergy extends PassportStrategy(
       if (storedToken.accessToken !== accessToken) {
         return null;
       }
-      const fingerprint = request.cookies['__Secure-Fgp'];
-      if (!verifyTokenFingerprint(fingerprint, payload['fingerprintHash']))
-        return null;
+
+      // const fingerprint = request.cookies['__Secure-Fgp'];
+      // if (!verifyTokenFingerprint(fingerprint, payload['fingerprintHash'])) {
+      //   return null;
+      // }
       const user = await this.prisma.user.findUnique({
         where: {
           id: payload.sub,

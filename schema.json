@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "route": "test",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/test",
+          "returnFields": [
+            {
+              "name": "id",
+              "returnType": "id",
+              "returnValue": "1"
+            },
+            {
+              "name": "email",
+              "returnType": "faker",
+              "returnValue": "email"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
