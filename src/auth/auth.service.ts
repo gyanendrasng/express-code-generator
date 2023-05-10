@@ -128,6 +128,9 @@ export class AuthService {
         refreshToken,
       };
     } catch (error) {
+      if (error?.code === 'P1001' || error?.code === 'P1017') {
+        throw new InternalServerErrorException(['Please try again later']);
+      }
       throw new ForbiddenException([error.message]);
     }
   }

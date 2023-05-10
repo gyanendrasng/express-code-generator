@@ -10,12 +10,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ProjectModule } from './project/project.module';
 import { TeamModule } from './team/team.module';
 import { RoleModule } from './role/role.module';
-import { KafkaModule } from './kafka/kafka.module';
 
 @Module({
   imports: [
-    AuthModule,
-    PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
     CacheModule.register<RedisClientOptions>({
       isGlobal: true,
@@ -25,10 +22,11 @@ import { KafkaModule } from './kafka/kafka.module';
         port: parseInt(process.env.REDIS_PORT),
       },
     }),
+    AuthModule,
+    PrismaModule,
     ProjectModule,
     TeamModule,
     RoleModule,
-    KafkaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

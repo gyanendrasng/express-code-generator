@@ -1,11 +1,21 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProjectDto } from './dtos';
-import { exec } from 'shelljs';
+import { CreateProjectDto, UpdateProjectDto } from './dtos';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class ProjectService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    @Inject('PROJECT_SERVICE') private readonly projectClient: ClientKafka,
+  ) {}
+
   async createProject(dto: CreateProjectDto, userId: string) {
     try {
       const project = await this.prismaService.project.create({
@@ -16,14 +26,27 @@ export class ProjectService {
           ownerId: userId,
         },
       });
-      exec(`./bash/create-project.sh ${project.id}`);
+      this.projectClient.emit('project_created', project);
       return project;
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new ConflictException('Project already exists');
     }
   }
 
-  updateSchema() {
-    return 'updating schema';
+  async updateSchema(dto: UpdateProjectDto) {
+    try {
+      const schema = JSON.parse(dto.schema as any);
+      const project = await this.prismaService.project.update({
+        where: { id: dto.id },
+        data: { schema: schema },
+        select: {
+          id: true,
+          name: true,
+          schema: true,
+        },
+      });
+      if (!project) throw new NotFoundException('Project not found');
+      this.projectClient.emit('project_built', project);
+    } catch (error) {}
   }
 }

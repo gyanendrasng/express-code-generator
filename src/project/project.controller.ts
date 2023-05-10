@@ -1,5 +1,5 @@
 import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
-import { CreateProjectDto } from './dtos';
+import { CreateProjectDto, UpdateProjectDto } from './dtos';
 import { ProjectService } from './project.service';
 import { GetUser } from 'src/auth/decorator';
 import { AccessTokenGuard } from 'src/auth/guards';
@@ -16,7 +16,7 @@ export class ProjectController {
 
   @Patch('updateSchema')
   @UseGuards(AccessTokenGuard)
-  updateSchema() {
-    return this.projectService.updateSchema();
+  updateSchema(@Body() body: UpdateProjectDto) {
+    return this.projectService.updateSchema(body);
   }
 }
