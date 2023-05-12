@@ -1,8 +1,8 @@
 import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { CreateProjectDto, UpdateProjectDto } from './dtos';
 import { ProjectService } from './project.service';
-import { GetUser } from 'src/auth/decorator';
-import { AccessTokenGuard } from 'src/auth/guards';
+import { GetUser } from 'apps/api-gateway/src/auth/decorator';
+import { AccessTokenGuard } from 'apps/api-gateway/src/auth/guards';
 
 @Controller('project')
 export class ProjectController {

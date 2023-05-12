@@ -6,7 +6,7 @@ import type { RedisClientOptions } from 'redis';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '@app/prisma';
 import { ProjectModule } from './project/project.module';
 import { TeamModule } from './team/team.module';
 import { RoleModule } from './role/role.module';

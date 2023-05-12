@@ -1,11 +1,12 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { Request } from 'express';
 import { Cache } from 'cache-manager';
-import { jwtToken } from 'src/auth/interfaces';
-import { verifyTokenFingerprint } from 'src/auth/utils';
+import { jwtToken } from 'apps/api-gateway/src/auth/interfaces';
+import { verifyTokenFingerprint } from 'apps/api-gateway/src/auth/utils';
 
 @Injectable()
 export class RefreshTokenStratergy extends PassportStrategy(

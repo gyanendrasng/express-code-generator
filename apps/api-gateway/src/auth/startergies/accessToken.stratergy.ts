@@ -4,10 +4,10 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { jwtToken } from 'src/auth/interfaces';
+import { jwtToken } from 'apps/api-gateway/src/auth/interfaces';
 import { Request } from 'express';
-import { verifyTokenFingerprint } from 'src/auth/utils';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { verifyTokenFingerprint } from 'apps/api-gateway/src/auth/utils';
+import { PrismaService } from '@app/prisma';
 
 @Injectable()
 export class AccessTokenStratergy extends PassportStrategy(
