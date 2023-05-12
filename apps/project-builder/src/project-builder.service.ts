@@ -1,14 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Project } from './interface';
 import { writeFileSync, existsSync } from 'fs';
 import { exec } from 'shelljs';
+import { Project } from './interface';
+import { expressServer, importStatements } from './snippets';
 
 @Injectable()
-export class BuildingService {
+export class ProjectBuilderService {
   createproject(data: Project) {
     try {
       exec(
-        `./shell-scripts/create-project.sh ${process.env.PROJECT_STORAGE_PATH}/${data.id}`,
+        `./apps/project-builder/src/shell-scripts/create-project.sh ${process.env.PROJECT_STORAGE_PATH}/${data.id}`,
       );
     } catch (error) {
       throw new InternalServerErrorException();
@@ -23,12 +24,7 @@ export class BuildingService {
         exec(`rm -rf ./${data.id}`);
         this.createproject(data);
       }
-      writeFileSync(
-        `./${data.id}/index.js`,
-        `
-      
-      `,
-      );
+      writeFileSync(`./${data.id}/index.js`, importStatements + expressServer);
     } catch (error) {
       throw new InternalServerErrorException();
     }
