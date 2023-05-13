@@ -1,3 +1,3 @@
 export const importStatements = `
-    import express from 'express';
+    const express = require('express');
 `;
