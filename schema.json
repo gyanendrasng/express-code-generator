@@ -6,11 +6,12 @@
         {
           "method": "GET",
           "path": "/test",
+          "returnType": "single",
           "returnFields": [
             {
               "name": "id",
-              "returnType": "id",
-              "returnValue": "1"
+              "returnType": "objectID",
+              "idType": "uuid"
             },
             {
               "name": "email",

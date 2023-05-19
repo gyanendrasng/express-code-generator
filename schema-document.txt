@@ -5,12 +5,52 @@ routes - Array of objects contains all the routes of the application.
 Fields of each routes object - 
 method - HTTP method of the route
 path - Path of the route
+returnType - Type of the response of the route (single/array)
 returnFields - Array of objects contains all the fields of the response of the route.
 
 
-Fields of returnFields object -
-name - Name of the field
-returnType - Type of the field
+Return types-
+
+objectID - 
+    idType - UUID/CUID/VUID/Autoincrement
+    name - Name of the field
+
+Fakerjs - to be decided
+
+string - 
+    name - Name of the field
+    length - Length of the string
+    returnValue - String to be returned
+
+number -
+    name - Name of the field
+    length - Length of the number
+    returnValue - Number to be returned (should only be present when random is false)
+    random - true/false (returns random number value when true)
+    min - Minimum value of the number (should only be present when random is true)
+    max - Maximum value of the number (should only be present when random is true)
+
+boolean -
+    name - Name of the field
+    returnValue - Boolean to be returned (should only be present when random is false)
+    random - true/false (returns random boolean value when true)
+
+date -
+    name - Name of the field
+    returnValue - Date to be returned (should only be present when random is false)
+    random - true/false (returns random date value when true)
+    min - Minimum value of the date (should only be present when random is true)
+    max - Maximum value of the date (should only be present when random is true)
+
+array (to be reviewwed) -
+    name - Name of the field
+    length - Length of the array
+    returnValue - Array to be returned (should only be present when random is false)
+    random - true/false (returns random array value when true)
+    min - Minimum value of the array (should only be present when random is true)
+    max - Maximum value of the array (should only be present when random is true)
+    type - Type of the array (string/number/boolean/date/objectID)
+    fields - Array of objects contains all the fields of the array.
 
 
 
