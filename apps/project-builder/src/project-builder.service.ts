@@ -1,9 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { writeFileSync, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import { exec } from 'shelljs';
 import { Project } from './interface';
-import { expressServer, importStatements } from './snippets';
 import { PROJECT_STORAGE_PATH } from 'config';
+import { createExpressServer, createFoldersAndFiler } from './helpers';
 
 @Injectable()
 export class ProjectBuilderService {
@@ -23,10 +23,8 @@ export class ProjectBuilderService {
         exec(`rm -rf ./${data.id}`);
         this.createproject(data);
       }
-      writeFileSync(
-        `${PROJECT_STORAGE_PATH}/${data.id}/index.js`,
-        importStatements + expressServer,
-      );
+      createExpressServer(data);
+      createFoldersAndFiler(data);
     } catch (error) {
       throw new InternalServerErrorException();
     }

@@ -6,6 +6,6 @@ export class UpdateProjectDto {
   id: string;
 
   @IsNotEmpty()
-  @IsJSON()
+  // @IsJSON()
   schema: JSON;
 }

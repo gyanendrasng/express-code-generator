@@ -35,10 +35,10 @@ export class ProjectService {
 
   async updateSchema(dto: UpdateProjectDto) {
     try {
-      const schema = JSON.parse(dto.schema as any);
+      // const schema = JSON.parse(dto.schema as any);
       const project = await this.prismaService.project.update({
         where: { id: dto.id },
-        data: { schema: schema },
+        data: { schema: dto.schema as any },
         select: {
           id: true,
           name: true,
@@ -47,6 +47,8 @@ export class ProjectService {
       });
       if (!project) throw new NotFoundException('Project not found');
       this.projectClient.emit('project_built', project);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

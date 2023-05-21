@@ -1,26 +1,7 @@
 {
   "routes": [
     {
-      "route": "test",
-      "endpoints": [
-        {
-          "method": "GET",
-          "path": "/test",
-          "returnType": "single",
-          "returnFields": [
-            {
-              "name": "id",
-              "returnType": "objectID",
-              "idType": "uuid"
-            },
-            {
-              "name": "email",
-              "returnType": "faker",
-              "returnValue": "email"
-            }
-          ]
-        }
-      ]
+      "name": "test"
     }
   ]
 }
