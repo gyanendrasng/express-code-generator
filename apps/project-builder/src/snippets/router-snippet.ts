@@ -2,7 +2,7 @@ import { capitalizeFirstLetter } from '../helpers';
 
 export const routerSnippet = (routerName: string) => `
 import { Router } from 'express';
-import  ${routerName}Controller  from '../controllers/${routerName}';
+import  ${routerName}Controller  from '../controllers/${routerName}.js';
 
 const router = Router();
 

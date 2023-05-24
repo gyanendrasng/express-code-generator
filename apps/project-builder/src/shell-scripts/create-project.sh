@@ -2,6 +2,7 @@ echo "\nCreating project $1"
 mkdir $1
 cd $1
 npm init -y
+sed -i '2i\  "type": "module",' package.json
 touch index.js
 
 echo "\nstarting node installation"

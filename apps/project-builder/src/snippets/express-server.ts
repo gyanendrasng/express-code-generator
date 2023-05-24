@@ -3,14 +3,19 @@ import { Route } from '../interface';
 export const expressServer = (routes: Route[]) => `
 const express = require('express');
 
-${routes.forEach((route) => {
-  return `import ${route.name}Router from 'src/routes/${route.name}';`;
-})}
+${routes
+  .map(
+    (route) =>
+      `import ${route.name}Router from './src/routes/${route.name}.js';`,
+  )
+  .join('\n')}
+
 
 const app = express();
 
-${routes.forEach((route) => {
-  return `app.use(${route.name}Router)`;
+${routes.map((route) => {
+  const routeVariable = `${route.name}Router`;
+  return `app.use('/${route.name}',${routeVariable});`;
 })}
 
 app.listen(3000, () => {console.log("server started at port 3000")});
